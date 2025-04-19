@@ -1,0 +1,177 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kesantunan Berbahasa</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Kesantunan Berbahasa</h1>
+            <nav>
+                <div class="hamburger" onclick="toggleMenu()">☰</div>
+                <ul id="nav-menu">
+                    <li><a href="index.html"><i class="fas fa-home"></i> Beranda</a></li>
+                    <li><a href="fungsi.html"><i class="fas fa-comment"></i> Fungsi Bahasa</a></li>
+                    <li><a href="ragam.html"><i class="fas fa-book"></i> Ragam Bahasa</a></li>
+                    <li><a href="kesantunan.html"><i class="fas fa-handshake"></i> Kesantunan Berbahasa</a></li>
+                    <li><a href="tentang.html"><i class="fas fa-info-circle"></i> Tentang</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <div class="hero">
+            <h2>Kesantunan Berbahasa</h2>
+            <p>Pelajari pentingnya berkomunikasi dengan sopan untuk membangun hubungan harmonis dalam masyarakat.</p>
+            <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60" alt="Harmoni Komunikasi">
+        </div>
+        <div class="container">
+            <div class="card">
+                <h3>Pengertian</h3>
+                <p>Kesantunan berbahasa adalah aturan perilaku yang disepakati masyarakat dalam penggunaan bahasa saat berkomunikasi, bertujuan memperlancar komunikasi dan menjaga hubungan harmonis.</p>
+                <img src="https://images.unsplash.com/photo-1516321318421-584d2a7a97f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60" alt="Budaya Sopan Santun">
+            </div>
+            <div class="card">
+                <h3>Aspek</h3>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> Sikap sopan santun dalam interaksi.</li>
+                    <li><i class="fas fa-check-circle"></i> Kontekstual, tergantung lingkungan dan situasi.</li>
+                    <li><i class="fas fa-check-circle"></i> Bipolar, melibatkan dua pihak dalam hubungan sosial.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Maksim Kesantunan (Geoffrey Leech, 1983)</h3>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> <strong>Kebijaksanaan</strong>: Mengurangi dampak negatif bagi lawan bicara.</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>Kedermawanan</strong>: Kesediaan menanggung kerugian demi kebaikan lawan bicara.</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>Pujian</strong>: Memberikan pujian atas keberhasilan mitra tutur.</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>Kerendahan Hati</strong>: Tidak menonjolkan diri atau membanggakan pencapaian.</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>Kesepakatan</strong>: Mencari kesamaan dengan lawan bicara.</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>Simpati</strong>: Menunjukkan simpati kepada lawan bicara.</li>
+                </ul>
+                <img src="https://images.unsplash.com/photo-1457369804613-52c61a468e7d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60" alt="Etika Komunikasi">
+            </div>
+            <div class="card">
+                <h3>Strategi Kesantunan</h3>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> <strong>Langsung</strong>: Ujaran langsung tanpa basa-basi.</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>Positif</strong>: Menggunakan basa-basi untuk menarik perhatian.</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>Negatif</strong>: Menekankan rasa hormat dan mengakui beban.</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>Tidak Langsung</strong>: Ujaran tidak relevan yang memerlukan interpretasi.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Konteks Penerapan</h3>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> <strong>Keluarga</strong>: Sopan terhadap orang tua dan anggota keluarga.</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>Sekolah</strong>: Santun kepada guru dan teman sebaya.</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>Dunia Kerja</strong>: Profesional dan sopan dalam berinteraksi.</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>Media Sosial</strong>: Tidak menyinggung dan menghindari ujaran kebencian.</li>
+                </ul>
+                <img src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60" alt="Konteks Sosial">
+            </div>
+            <div class="card">
+                <h3>Dampak</h3>
+                <p><strong>Kesantunan</strong>: Mempererat hubungan sosial, membentuk karakter positif.</p>
+                <p><strong>Ketidaksantunan</strong>: Meningkatkan konflik, menurunkan nilai moral, dampak psikologis negatif.</p>
+            </div>
+            <div class="card">
+                <h3>Kesimpulan</h3>
+                <p>Kesantunan berbahasa adalah aspek penting dalam kehidupan bermasyarakat yang mencerminkan sikap hormat, kepedulian, dan etika dalam berkomunikasi. Dengan menerapkan prinsip dan strategi kesantunan, kita dapat menciptakan komunikasi yang harmonis.</p>
+                <img src="https://images.unsplash.com/photo-1503676260728-1b97b1b37d5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60" alt="Komunikasi Harmonis">
+            </div>
+        </div>
+    </main>
+    <footer>
+        <p>© 2025 Yasa Widhyadana. Dibuat untuk UTS Bahasa Indonesia.</p>
+    </footer>
+    <script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+            return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+            if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+                try {
+                    var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                    var firstSheetName = workbook.SheetNames[0];
+                    var worksheet = workbook.Sheets[firstSheetName];
+                    var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                    var filteredData = jsonData.filter(row => row.some(filledCell));
+                    var headerRowIndex = filteredData.findIndex((row, index) =>
+                        row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                    );
+                    if (headerRowIndex === -1 || headerRowIndex > 25) {
+                        headerRowIndex = 0;
+                    }
+                    var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex));
+                    csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                    return csv;
+                } catch (e) {
+                    console.error(e);
+                    return "";
+                }
+            }
+            return gk_fileData[filename] || "";
+        }
+    </script>
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById('nav-menu');
+            menu.classList.toggle('active');
+        }
+        document.querySelectorAll('#nav-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('nav-menu').classList.remove('active');
+            });
+        });
+    </script>
+    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9329e9691f651d6c',t:'MTc0NTAzOTU5Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+</body>
+</html>
