@@ -1,0 +1,88 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ragam Bahasa Indonesia</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Kesantunan Berbahasa</h1>
+            <nav>
+                <div class="hamburger" onclick="toggleMenu()">☰</div>
+                <ul id="nav-menu">
+                    <li><a href="index.html">Beranda</a></li>
+                    <li><a href="fungsi.html">Fungsi Bahasa</a></li>
+                    <li><a href="ragam.html">Ragam Bahasa</a></li>
+                    <li><a href="kesantunan.html">Kesantunan Berbahasa</a></li>
+                    <li><a href="tentang.html">Tentang</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <h2>Ragam Bahasa Indonesia</h2>
+            <p>Ragam Bahasa Indonesia dibagi menjadi beberapa jenis, antara lain:</p>
+            <ul>
+                <li><strong>Ragam Formal</strong>: Digunakan dalam situasi resmi, seperti pidato atau dokumen resmi.</li>
+                <li><strong>Ragam Informal</strong>: Digunakan dalam percakapan sehari-hari dengan teman atau keluarga.</li>
+                <li><strong>Ragam Ilmiah</strong>: Digunakan dalam penulisan karya ilmiah atau jurnal.</li>
+            </ul>
+            <p>Kesantunan berbahasa terkait erat dengan pemilihan ragam bahasa. Memilih ragam yang tepat sesuai konteks (formal atau informal) adalah kunci untuk menjaga komunikasi yang santun dan efektif.</p>
+            <img src="https://images.unsplash.com/photo-1516321318421-584d2a7a97f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60" alt="Budaya Indonesia">
+        </div>
+    </main>
+    <footer>
+        <p>© 2025 [Nama Kamu]. Dibuat untuk UTS Bahasa Indonesia.</p>
+    </footer>
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById('nav-menu');
+            menu.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
