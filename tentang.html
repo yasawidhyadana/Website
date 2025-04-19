@@ -44,7 +44,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tentang</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 <body>
     <header>
@@ -53,32 +54,76 @@
             <nav>
                 <div class="hamburger" onclick="toggleMenu()">☰</div>
                 <ul id="nav-menu">
-                    <li><a href="index.html">Beranda</a></li>
-                    <li><a href="fungsi.html">Fungsi Bahasa</a></li>
-                    <li><a href="ragam.html">Ragam Bahasa</a></li>
-                    <li><a href="kesantunan.html">Kesantunan Berbahasa</a></li>
-                    <li><a href="tentang.html">Tentang</a></li>
+                    <li><a href="index.html"><i class="fas fa-home"></i> Beranda</a></li>
+                    <li><a href="fungsi.html"><i class="fas fa-comment"></i> Fungsi Bahasa</a></li>
+                    <li><a href="ragam.html"><i class="fas fa-book"></i> Ragam Bahasa</a></li>
+                    <li><a href="kesantunan.html"><i class="fas fa-handshake"></i> Kesantunan Berbahasa</a></li>
+                    <li><a href="tentang.html"><i class="fas fa-info-circle"></i> Tentang</a></li>
                 </ul>
             </nav>
         </div>
     </header>
     <main>
-        <div class="container">
+        <div class="hero">
             <h2>Tentang Website</h2>
-            <p>Nama: Yasa Widhyadana</p>
-            <p>NIM: 14022400049</p>
-            <p>Website ini dibuat sebagai syarat UTS Mata Kuliah Bahasa Indonesia. Tujuannya adalah untuk menyajikan materi tentang Fungsi dan Ragam Bahasa Indonesia, serta membahas pentingnya kesantunan berbahasa dalam komunikasi sehari-hari.</p>
+            <p>Website ini dibuat untuk memenuhi tugas UTS Mata Kuliah Bahasa Indonesia, menyajikan informasi tentang kesantunan berbahasa dan ragam bahasa Indonesia.</p>
             <img src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60" alt="Pendidikan">
+        </div>
+        <div class="container">
+            <div class="card">
+                <h3>Identitas Pembuat</h3>
+                <ul>
+                    <li><i class="fas fa-user"></i> Nama: Yasa Widhyadana</li>
+                    <li><i class="fas fa-id-card"></i> NIM: 14022400049</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Tujuan Website</h3>
+                <p>Website ini bertujuan untuk menyajikan materi tentang Fungsi dan Ragam Bahasa Indonesia, serta membahas pentingnya kesantunan berbahasa dalam komunikasi sehari-hari.</p>
+            </div>
         </div>
     </main>
     <footer>
-        <p>© 2025 [Nama Kamu]. Dibuat untuk UTS Bahasa Indonesia.</p>
+        <p>© 2025 Yasa Widhyadana. Dibuat untuk UTS Bahasa Indonesia.</p>
     </footer>
+    <script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+            return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+            if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+                try {
+                    var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                    var firstSheetName = workbook.SheetNames[0];
+                    var worksheet = workbook.Sheets[firstSheetName];
+                    var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                    var filteredData = jsonData.filter(row => row.some(filledCell));
+                    var headerRowIndex = filteredData.findIndex((row, index) =>
+                        row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                    );
+                    if (headerRowIndex === -1 || headerRowIndex > 25) {
+                        headerRowIndex = 0;
+                    }
+                    var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex));
+                    csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                    return csv;
+                } catch (e) {
+                    console.error(e);
+                    return "";
+                }
+            }
+            return gk_fileData[filename] || "";
+        }
+    </script>
     <script>
         function toggleMenu() {
             const menu = document.getElementById('nav-menu');
             menu.classList.toggle('active');
         }
     </script>
+    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9329d7b54c6eb0ac',t:'MTc0NTAzODg3MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
 </html>
